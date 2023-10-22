@@ -6,5 +6,5 @@ export const getUserInfo = async ({ latitude, longitude }) => {
 
   const { data } = await axios(urlPosition);
 
-  console.log(data);
+  return data;
 };
