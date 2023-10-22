@@ -1,16 +1,37 @@
+import { lazy, useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Header } from './Header';
+import { getUserInfo } from 'services/getUserInfo';
+
+const Home = lazy(() => import('../pages/Home'));
+const Rates = lazy(() => import('../pages/Rates'));
+
 export const App = () => {
+  useEffect(() => {
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    };
+
+    function success(pos) {
+      getUserInfo(pos.coords);
+    }
+
+    function error(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    navigator.geolocation.getCurrentPosition(success, error, options);
+  }, []);
+
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <Routes>
+      <Route path="/" element={<Header />}>
+        <Route index element={<Home />} />
+        <Route path="/rates" element={<Rates />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 };
