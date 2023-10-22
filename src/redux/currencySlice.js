@@ -5,7 +5,9 @@ const currencySlice = createSlice({
   name: 'currency',
   initialState: { baseCurrency: '' },
   reducers: {
-    setBaseCurrency(state, action) {},
+    setBaseCurrency(state, action) {
+      state.baseCurrency = action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchCurrency.fulfilled, (state, { payload }) => {
