@@ -2,10 +2,11 @@ import { lazy, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Header } from './Header';
 import { useDispatch } from 'react-redux';
-import { fetchCurrency } from 'redux/operations';
-import { setBaseCurrency } from 'redux/currencySlice';
 
-const Home = lazy(() => import('../pages/Home'));
+import { fetchCurrency } from '../redux/operations';
+import { setBaseCurrency } from '../redux/currencySlice';
+
+const Converter = lazy(() => import('../pages/Converter'));
 const Rates = lazy(() => import('../pages/Rates'));
 
 export const App = () => {
@@ -32,7 +33,7 @@ export const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Header />}>
-        <Route index element={<Home />} />
+        <Route index element={<Converter />} />
         <Route path="/rates" element={<Rates />} />
       </Route>
       <Route path="*" element={<Navigate to="/" />} />

@@ -11,6 +11,8 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import { conversionReducer } from './conversionSlice';
+import { ratesReducer } from './ratesSlice';
 
 const persistConfig = {
   key: 'root',
@@ -20,7 +22,11 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, currencyReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    currency: persistedReducer,
+    conversion: conversionReducer,
+    rates: ratesReducer,
+  },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {

@@ -1,4 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { exchangeCurrency } from 'services/exchangeCurrency';
+import { getRates } from 'services/getRates';
 import { getUserInfo } from 'services/getUserInfo';
 
 export const fetchCurrency = createAsyncThunk(
@@ -14,6 +16,31 @@ export const fetchCurrency = createAsyncThunk(
       const { results } = await getUserInfo(coords);
       //   console.log(results[0].annotations.currency.iso_code);
       return results[0].annotations.currency.iso_code;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const fetchExchangeCurrency = createAsyncThunk(
+  'conversion/exchangeCurrency',
+  async ({ amount, from, to }, thunkAPI) => {
+    try {
+      const { result } = await exchangeCurrency({ amount, from, to });
+      return result;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const fetchExchangeRates = createAsyncThunk(
+  'rates/fetchExchangeRates',
+  async (baseCurrency, thunkAPI) => {
+    try {
+      const { rates } = await getRates(baseCurrency);
+      console.log(rates);
+      return rates;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
